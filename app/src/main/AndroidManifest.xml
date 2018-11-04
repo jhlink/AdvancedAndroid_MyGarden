@@ -14,7 +14,7 @@
             android:exported="true" />
 
         <!-- DONE (1): Create a plant_widget_info.xml file and set updatePeriodMillis to 30 minutes -->
-        <!-- TODO (2): Create a plant_widget.xml file that contains an ImageView defaulting to @drawable/grass -->
+        <!-- DONE (2): Create a plant_widget.xml file that contains an ImageView defaulting to @drawable/grass -->
         <!--
              TODO (3): Create a PlantWidgetProvider class that extends AppWidgetProvider and
                         set updateAppWidget to handle clicks and launch MainActivity
