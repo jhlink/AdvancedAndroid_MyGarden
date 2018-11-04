@@ -16,6 +16,10 @@ import static com.example.android.mygarden.provider.PlantContract.PATH_PLANTS;
 public class PlantWateringService extends IntentService {
     public static final String ACTION_WATER_PLANTS = "com.example.android.mygarden.action.water_plants";
 
+    public PlantWateringService() {
+        super("PlantWateringService");
+    }
+
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
