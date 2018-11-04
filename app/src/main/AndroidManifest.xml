@@ -20,9 +20,18 @@
                         set updateAppWidget to handle clicks and launch MainActivity
         -->
         <!--
-             TODO (4): Add a reciever tag for PlantWidgetProvider and an intent-filter for APPWIDGET_UPDATE
+             DONE (4): Add a reciever tag for PlantWidgetProvider and an intent-filter for APPWIDGET_UPDATE
                         with meta data pointing to the plant_widget_info file
         -->
+        <receiver android:name=".utils.PlantWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android:appwidget.provider"
+                android:resource="@xml/plant_widget_provider_info" />
+        </receiver>
 
         <activity
             android:name=".ui.MainActivity"
