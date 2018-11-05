@@ -42,6 +42,7 @@ public class PlantWateringService extends IntentService {
     public static final String ACTION_WATER_PLANT = "com.example.android.mygarden.action.water_plant";
     public static final String ACTION_UPDATE_PLANT_WIDGETS = "com.example.android.mygarden.action.update_plant_widgets";
     public static final String EXTRA_PLANT_ID = "PLANT_ID";
+    public static final int MIN_AGE_BETWEEN_WATER = 30;
 
     public PlantWateringService() {
         super("PlantWateringService");
@@ -82,7 +83,7 @@ public class PlantWateringService extends IntentService {
             if (ACTION_WATER_PLANT.equals(action)) {
                 handleActionWaterPlant(plantId);
             } else if (ACTION_UPDATE_PLANT_WIDGETS.equals(action)) {
-                handleActionUpdatePlantWidgets();
+                handleActionUpdatePlantWidgets(plantId);
             }
         }
     }
@@ -112,7 +113,10 @@ public class PlantWateringService extends IntentService {
     /**
      * Handle action UpdatePlantWidgets in the provided background thread
      */
-    private void handleActionUpdatePlantWidgets() {
+    private void handleActionUpdatePlantWidgets(long plantId) {
+
+        boolean hideWaterButton = false;
+
         //Query to get the plant that's most in need for water (last watered)
         Uri PLANT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_PLANTS).build();
         Cursor cursor = getContentResolver().query(
@@ -135,10 +139,15 @@ public class PlantWateringService extends IntentService {
             int plantType = cursor.getInt(plantTypeIndex);
             cursor.close();
             imgRes = PlantUtils.getPlantImageRes(this, timeNow - createdAt, timeNow - wateredAt, plantType);
+            if (( timeNow - wateredAt ) > PlantUtils.MIN_AGE_BETWEEN_WATER ) {
+                hideWaterButton = true;
+            }
         }
+
+
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, PlantWidgetProvider.class));
         //Now update all widgets
-        PlantWidgetProvider.updatePlantWidgets(this, appWidgetManager, imgRes, appWidgetIds);
+        PlantWidgetProvider.updatePlantWidgets(this, appWidgetManager, imgRes, appWidgetIds, plantId, hideWaterButton);
     }
 }

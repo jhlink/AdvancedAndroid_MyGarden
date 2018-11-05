@@ -21,6 +21,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.android.mygarden.ui.MainActivity;
@@ -29,7 +30,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
 
     // setImageViewResource to update the widget’s image
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int imgRes, int appWidgetId) {
+                                int imgRes, int appWidgetId, long plantId, boolean isWateringButtonVisible) {
 
         // TODO (3): Set the click handler to open the DetailActivity for plant ID,
         // or the MainActivity if plant ID is invalid
@@ -42,11 +43,20 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         views.setImageViewResource(R.id.widget_plant_image, imgRes);
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.widget_plant_image, pendingIntent);
+
         // Add the wateringservice click handler
         Intent wateringIntent = new Intent(context, PlantWateringService.class);
-        wateringIntent.setAction(PlantWateringService.ACTION_WATER_PLANTS);
+        wateringIntent.setAction(PlantWateringService.ACTION_WATER_PLANT);
+        wateringIntent.putExtra(PlantWateringService.EXTRA_PLANT_ID, plantId);
         PendingIntent wateringPendingIntent = PendingIntent.getService(context, 0, wateringIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_water_button, wateringPendingIntent);
+
+        if ( isWateringButtonVisible ) {
+            views.setViewVisibility(R.id.widget_water_button, View.VISIBLE);
+        } else {
+            views.setViewVisibility(R.id.widget_water_button, View.INVISIBLE);
+        }
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -57,12 +67,12 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         PlantWateringService.startActionUpdatePlantWidgets(context);
     }
 
-    // TODO (2): Modify updatePlantWidgets and updateAppWidget to pass the plant ID as well as a boolean
+    // DONE (2): Modify updatePlantWidgets and updateAppWidget to pass the plant ID as well as a boolean
     // to show/hide the water button
     public static void updatePlantWidgets(Context context, AppWidgetManager appWidgetManager,
-                                          int imgRes, int[] appWidgetIds) {
+                                          int imgRes, int[] appWidgetIds, long plantId, boolean isWaterButtonVisible) {
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, imgRes, appWidgetId);
+            updateAppWidget(context, appWidgetManager, imgRes, appWidgetId, plantId, isWaterButtonVisible);
         }
     }
 
