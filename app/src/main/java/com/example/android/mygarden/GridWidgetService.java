@@ -1,6 +1,7 @@
 package com.example.android.mygarden;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.View;
@@ -13,7 +14,14 @@ import com.example.android.mygarden.utils.PlantUtils;
 import static com.example.android.mygarden.provider.PlantContract.BASE_CONTENT_URI;
 import static com.example.android.mygarden.provider.PlantContract.PATH_PLANTS;
 
-public class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+public class GridWidgetService extends RemoteViewsService {
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new GridRemoteViewsFactory(this.getApplicationContext());
+    }
+}
+
+class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     Context mContext;
     Cursor mCursor;
