@@ -13,12 +13,12 @@ import com.example.android.mygarden.utils.PlantUtils;
 import static com.example.android.mygarden.provider.PlantContract.BASE_CONTENT_URI;
 import static com.example.android.mygarden.provider.PlantContract.PATH_PLANTS;
 
-public class GridRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+public class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     Context mContext;
     Cursor mCursor;
 
-    public GridRemoveViewsFactory(Context applicationContext) {
+    public GridRemoteViewsFactory(Context applicationContext) {
         mContext = applicationContext;
     }
 
