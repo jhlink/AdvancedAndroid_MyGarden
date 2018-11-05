@@ -31,6 +31,7 @@ import com.example.android.mygarden.ui.PlantDetailActivity;
 import com.example.android.mygarden.utils.PlantUtils;
 
 import static com.example.android.mygarden.provider.PlantContract.BASE_CONTENT_URI;
+import static com.example.android.mygarden.provider.PlantContract.INVALID_PLANT_ID;
 import static com.example.android.mygarden.provider.PlantContract.PATH_PLANTS;
 
 /**
@@ -116,9 +117,10 @@ public class PlantWateringService extends IntentService {
     /**
      * Handle action UpdatePlantWidgets in the provided background thread
      */
-    private void handleActionUpdatePlantWidgets(long plantId) {
+    private void handleActionUpdatePlantWidgets() {
 
         boolean hideWaterButton = false;
+        long plantId = INVALID_PLANT_ID;
 
         //Query to get the plant that's most in need for water (last watered)
         Uri PLANT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_PLANTS).build();
@@ -133,18 +135,20 @@ public class PlantWateringService extends IntentService {
         int imgRes = R.drawable.grass; // Default image in case our garden is empty
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
+            int idIndex = cursor.getColumnIndex(PlantContract.PlantEntry._ID);
             int createTimeIndex = cursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_CREATION_TIME);
             int waterTimeIndex = cursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME);
             int plantTypeIndex = cursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_PLANT_TYPE);
+
+            plantId = cursor.getLong(idIndex);
             long timeNow = System.currentTimeMillis();
             long wateredAt = cursor.getLong(waterTimeIndex);
             long createdAt = cursor.getLong(createTimeIndex);
             int plantType = cursor.getInt(plantTypeIndex);
             cursor.close();
             imgRes = PlantUtils.getPlantImageRes(this, timeNow - createdAt, timeNow - wateredAt, plantType);
-            if (( timeNow - wateredAt ) > PlantUtils.MIN_AGE_BETWEEN_WATER ) {
-                hideWaterButton = true;
-            }
+
+            hideWaterButton = ( timeNow - wateredAt ) > PlantUtils.MIN_AGE_BETWEEN_WATER && (timeNow - wateredAt) < PlantUtils.MAX_AGE_WITHOUT_WATER;
         }
 
 
