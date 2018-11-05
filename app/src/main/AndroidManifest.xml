@@ -30,7 +30,8 @@
                         - getViewAt setting the fillInIntent for widget_plant_image with the plant ID as extras -->
 
         <!-- DONE (3); Register the RemoteViewsService in the Manifest -->
-        <service android:name=".GridWidgetService"/>
+        <service android:name=".GridWidgetService"
+            android:permission="android.permissions.BIND_REMOTEVIEWS"/>
 
         <provider
             android:name=".provider.PlantContentProvider"
