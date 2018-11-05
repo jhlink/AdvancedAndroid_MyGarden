@@ -43,6 +43,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
             intent = new Intent(context, MainActivity.class);
         } else {
             intent = new Intent(context, PlantDetailActivity.class);
+            intent.putExtra(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
         }
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         // Construct the RemoteViews object
@@ -57,7 +58,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         // Add the wateringservice click handler
         Intent wateringIntent = new Intent(context, PlantWateringService.class);
         wateringIntent.setAction(PlantWateringService.ACTION_WATER_PLANT);
-        wateringIntent.putExtra(PlantWateringService.EXTRA_PLANT_ID, plantId);
+        wateringIntent.putExtra(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
         PendingIntent wateringPendingIntent = PendingIntent.getService(context, 0, wateringIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_water_button, wateringPendingIntent);
 

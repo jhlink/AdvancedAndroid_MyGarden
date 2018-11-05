@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.example.android.mygarden.provider.PlantContract;
+import com.example.android.mygarden.ui.PlantDetailActivity;
 import com.example.android.mygarden.utils.PlantUtils;
 
 import static com.example.android.mygarden.provider.PlantContract.BASE_CONTENT_URI;
@@ -41,7 +42,6 @@ public class PlantWateringService extends IntentService {
     // use EXTRA_PLANT_ID to pass the plant ID to the service and update the query to use SINGLE_PLANT_URI
     public static final String ACTION_WATER_PLANT = "com.example.android.mygarden.action.water_plant";
     public static final String ACTION_UPDATE_PLANT_WIDGETS = "com.example.android.mygarden.action.update_plant_widgets";
-    public static final String EXTRA_PLANT_ID = "PLANT_ID";
     public static final int MIN_AGE_BETWEEN_WATER = 30;
 
     public PlantWateringService() {
@@ -79,7 +79,7 @@ public class PlantWateringService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            final long plantId = intent.getLongExtra(EXTRA_PLANT_ID, -1);
+            final long plantId = intent.getLongExtra(PlantDetailActivity.EXTRA_PLANT_ID, -1);
             if (ACTION_WATER_PLANT.equals(action)) {
                 handleActionWaterPlant(plantId);
             } else if (ACTION_UPDATE_PLANT_WIDGETS.equals(action)) {
