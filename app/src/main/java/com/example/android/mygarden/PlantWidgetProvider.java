@@ -52,6 +52,8 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.widget_plant_image, pendingIntent);
 
+        views.setTextViewText(R.id.tv_plant_id_view, String.valueOf(plantId));
+
         // Add the wateringservice click handler
         Intent wateringIntent = new Intent(context, PlantWateringService.class);
         wateringIntent.setAction(PlantWateringService.ACTION_WATER_PLANT);
