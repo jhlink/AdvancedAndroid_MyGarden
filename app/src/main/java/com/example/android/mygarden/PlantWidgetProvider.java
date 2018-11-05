@@ -42,7 +42,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
 
         // DONE (4): separate the updateAppWidget logic into getGardenGridRemoteView and getSinglePlantRemoteView
         // DONE (5): Use getAppWidgetOptions to get widget width and use the appropriate RemoteView method
-        // TODO (6): Set the PendingIntent template in getGardenGridRemoteView to launch PlantDetailActivity
+        // DONE (6): Set the PendingIntent template in getGardenGridRemoteView to launch PlantDetailActivity
 
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
