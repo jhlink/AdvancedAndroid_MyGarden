@@ -24,7 +24,10 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.example.android.mygarden.provider.PlantContract;
 import com.example.android.mygarden.ui.MainActivity;
+import com.example.android.mygarden.ui.PlantDetailActivity;
+import com.example.android.mygarden.utils.PlantUtils;
 
 public class PlantWidgetProvider extends AppWidgetProvider {
 
@@ -32,10 +35,15 @@ public class PlantWidgetProvider extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int imgRes, int appWidgetId, long plantId, boolean isWateringButtonVisible) {
 
-        // TODO (3): Set the click handler to open the DetailActivity for plant ID,
+        // DONE (3): Set the click handler to open the DetailActivity for plant ID,
         // or the MainActivity if plant ID is invalid
         // Create an Intent to launch MainActivity when clicked
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent;
+        if ( plantId == PlantContract.INVALID_PLANT_ID ) {
+            intent = new Intent(context, MainActivity.class);
+        } else {
+            intent = new Intent(context, PlantDetailActivity.class);
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.plant_widget);
