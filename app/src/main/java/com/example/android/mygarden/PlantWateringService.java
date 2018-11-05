@@ -19,6 +19,7 @@ package com.example.android.mygarden;
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -94,10 +95,10 @@ public class PlantWateringService extends IntentService {
      * parameters.
      */
     private void handleActionWaterPlant(long plantId) {
-        Uri SINGLE_PLANT_URI = BASE_CONTENT_URI.buildUpon()
+        Uri SINGLE_PLANT_URI = ContentUris.withAppendedId(
+                BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_PLANTS)
-                .appendPath(String.valueOf(plantId))
-                .build();
+                .build(), plantId);
 
         ContentValues contentValues = new ContentValues();
         long timeNow = System.currentTimeMillis();
@@ -108,6 +109,7 @@ public class PlantWateringService extends IntentService {
                 contentValues,
                 PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME + ">?",
                 new String[]{String.valueOf(timeNow - PlantUtils.MAX_AGE_WITHOUT_WATER)});
+        startActionUpdatePlantWidgets(this);
     }
 
 
