@@ -80,11 +80,11 @@ public class PlantWateringService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            final long plantId = intent.getLongExtra(PlantDetailActivity.EXTRA_PLANT_ID, -1);
             if (ACTION_WATER_PLANT.equals(action)) {
+                final long plantId = intent.getLongExtra(PlantDetailActivity.EXTRA_PLANT_ID, PlantContract.INVALID_PLANT_ID);
                 handleActionWaterPlant(plantId);
             } else if (ACTION_UPDATE_PLANT_WIDGETS.equals(action)) {
-                handleActionUpdatePlantWidgets(plantId);
+                handleActionUpdatePlantWidgets();
             }
         }
     }
