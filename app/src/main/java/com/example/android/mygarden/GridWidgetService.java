@@ -58,7 +58,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDestroy() {
-
+        mCursor.close();
     }
 
     @Override
