@@ -76,7 +76,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
             intent = new Intent(context, PlantDetailActivity.class);
             intent.putExtra(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
         }
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.plant_widget);
         // Update image
